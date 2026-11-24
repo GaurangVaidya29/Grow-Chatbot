@@ -4,7 +4,7 @@ A facts-only RAG prototype for answering factual questions about a small, approv
 
 ## Current status
 
-Phases 1 through 8 are implemented: project structure, exact-five-page scraping, trusted document loading, structure-aware chunking, MiniLM embeddings, persistent ChromaDB indexing, guarded retrieval/answer logic, and the Stitch-inspired browser UI.
+Phases 1 through 8 are implemented: project structure, exact-five-page scraping, trusted document loading, structure-aware chunking, MiniLM embeddings, persistent ChromaDB indexing, guarded retrieval/answer logic, and the Stitch export browser UI.
 
 ## Prerequisites
 
@@ -59,17 +59,17 @@ python query.py --question "What is the expense ratio of HDFC Large Cap Fund Dir
 
 The pipeline checks sensitive data and restricted intents before embedding the question, resolves the scheme and requested fact, creates the query embedding locally with Hugging Face `sentence-transformers/all-MiniLM-L6-v2`, and filters ChromaDB results by scheme, fact type, trusted source, and score. Supported factual evidence is sent only to Groq for answer generation; every response contains one approved citation and its ingestion date, while unsupported or unsafe questions use deterministic templates without an LLM call.
 
-## Preview the Stitch-inspired UI
+## Preview the Stitch export UI
 
 ```text
 python -m http.server 8088 --bind 127.0.0.1 --directory public
 ```
 
-Open `http://127.0.0.1:8088/stitch.html` to preview the layout. The static server does not provide `/api/query`; interactive factual answers require the Vercel API or a compatible local API. The active UI uses `public/stitch.html`, `public/stitch.css`, and `public/stitch.js`, based on `stitch_hdfc_fund_facts_assistant.zip`. The earlier `app/ui.py` is retained only as a legacy local prototype.
+Open `http://127.0.0.1:8088/stitch.html` to preview the layout. The static server does not provide `/api/query`; interactive factual answers require the Vercel API or a compatible local API. The active UI uses the supplied Stitch layout in `public/stitch.html` and the live API behavior in `public/stitch.js`. The page loads Tailwind from its CDN. The earlier `app/ui.py` is retained only as a legacy local prototype.
 
 ## Deploy on Vercel
 
-Vercel maps `/` to the Stitch-inspired static frontend and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
+Vercel maps `/` to the Stitch export frontend and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
 
 Add these Environment Variables in Vercel for Production, Preview, and Development:
 

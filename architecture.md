@@ -58,7 +58,7 @@ The architecture deliberately favors inspectability and deterministic safeguards
 | Concern | Reference choice | Rationale |
 |---|---|---|
 | Runtime | Python 3.11+ | Strong support for scraping, embeddings, ChromaDB, and rapid prototyping. |
-| UI | Stitch-inspired HTML, CSS, and JavaScript in `public/stitch.*` | Responsive browser interface hosted by Vercel and connected to `/api/query`. |
+| UI | Supplied Stitch export in `public/stitch.html` with `public/stitch.js` | Responsive browser interface hosted by Vercel and connected to `/api/query`. |
 | Configuration | YAML + Pydantic settings + `.env` | Typed validation and clean separation of settings from secrets. |
 | HTTP loading | `httpx` | Timeouts, redirect controls, response limits, and testable client abstraction. |
 | HTML extraction | Beautiful Soup with source-specific selectors and generic fallback | Preserves labelled facts while keeping parsing inspectable. |
@@ -76,7 +76,7 @@ Equivalent libraries may be substituted if they preserve the interfaces, control
 
 ```mermaid
 flowchart LR
-    U[Retail or support user] --> UI[Stitch-inspired browser UI]
+    U[Retail or support user] --> UI[Stitch export browser UI]
     D[Developer or evaluator] --> CLI[Ingestion and evaluation CLI]
     CLI --> S[Approved public source pages]
     CLI --> FS[(Local artifact store)]
@@ -434,9 +434,9 @@ class QueryService:
 
 It does not persist raw requests or responses. When debug tracing is explicitly enabled, it passes only redacted fields and internal IDs to the trace writer.
 
-### 9.16 Stitch-inspired browser UI
+### 9.16 Stitch export browser UI
 
-`stitch_hdfc_fund_facts_assistant.zip` is the supplied design source. The active frontend is `public/stitch.html`, `public/stitch.css`, and `public/stitch.js`; `vercel.json` maps `/` to it. The ZIP's sample answer, factsheet claims, and demo routing are not authoritative. The UI uses the category, answer, citation, and source date returned by `/api/query` and contains no retrieval or policy logic. It displays:
+`stitch_hdfc_fund_facts_assistant.zip` is the supplied design source. The active frontend uses the export's layout and Tailwind styling in `public/stitch.html`, with application behavior in `public/stitch.js`; `vercel.json` maps `/` to it. The ZIP's sample answer, factsheet claims, and demo routing are not authoritative. The UI uses the category, answer, citation, and source date returned by `/api/query` and contains no retrieval or policy logic. It displays:
 
 - Welcome message.
 - Three example questions.
@@ -984,7 +984,7 @@ Prototype performance targets from the PRD:
 
 ```text
 Developer workstation
-├── static Stitch-inspired browser UI
+├── static Stitch export browser UI
 ├── local embedding model cache
 ├── persistent Chroma directory
 ├── inspectable data artifacts
@@ -999,7 +999,7 @@ Vercel serves the static UI and a Python serverless function with a prebuilt rea
 
 ```mermaid
 flowchart LR
-    B[Browser] --> S[Static Stitch-inspired UI]
+    B[Browser] --> S[Static Stitch export UI]
     S --> A[POST /api/query]
     A --> V[(Read-only exported vector index)]
     A --> H[Hugging Face embeddings]
@@ -1173,7 +1173,7 @@ Live source ingestion and paid LLM evaluation should be separate manual or sched
 5. Sensitive-data gate, intent router, scheme/fact resolver, and templates.
 6. Retriever and no-evidence behavior.
 7. Groq adapter, structured answer generator, and response validator.
-8. Query orchestrator and Stitch-inspired browser UI.
+8. Query orchestrator and Stitch export browser UI.
 9. Evaluation runner, observability, acceptance tests, and packaging.
 
 Each step should end with usable artifacts and tests before the next stage is added.

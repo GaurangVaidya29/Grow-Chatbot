@@ -12,7 +12,7 @@ VERCEL_IGNORE = (ROOT / ".vercelignore").read_text(encoding="utf-8").splitlines(
 def test_vercel_root_uses_stitch_ui_and_existing_api_contract():
     assert ROUTING["framework"] is None
     assert {"source": "/", "destination": "/stitch.html"} in ROUTING["rewrites"]
-    assert 'id="question-form"' in HTML
+    assert 'id="qaForm"' in HTML
     assert "fetch('/api/query'" in SCRIPT
     assert "payload.category" in SCRIPT
     assert "payload.citation" in SCRIPT
@@ -28,3 +28,14 @@ def test_stitch_ui_contains_no_exported_sample_facts_or_sources():
         assert mock_content not in combined
     assert "Facts-only. No investment advice" in HTML
     assert "source_updated_at" in SCRIPT
+    assert 'onclick=' not in HTML
+    assert 'onsubmit=' not in HTML
+    assert "\ufffd" not in combined
+
+
+def test_stitch_export_layout_and_live_states_are_present():
+    for marker in ('class="fund-btn ', 'class="topic-chip ', 'class="example-card ',
+                   'id="stateLoading"', 'id="stateVerifiedAnswer"', 'id="stateMessage"'):
+        assert marker in HTML
+    assert 'id="stateVerifiedAnswer"' in HTML.split('id="responseArea"', 1)[1]
+    assert '<script src="/stitch.js" defer></script>' in HTML

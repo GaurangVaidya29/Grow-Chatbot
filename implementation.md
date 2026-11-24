@@ -685,11 +685,11 @@ Use fixed templates instead of the LLM for:
 - Every response includes exactly one approved link.
 - All answers and refusals stay within three sentences.
 
-## 10. Phase 8: Build the Stitch-inspired browser UI
+## 10. Phase 8: Build the Stitch export browser UI
 
 ### 10.1 UI content
 
-Use `stitch_hdfc_fund_facts_assistant.zip` as the design reference. The production UI lives in `public/stitch.html`, `public/stitch.css`, and `public/stitch.js`; `vercel.json` maps `/` to `/stitch.html`. The downloaded ZIP contained mock facts and references to SID/factsheets, so those are not copied into the working UI. The approved corpus remains the five Groww pages in `config/sources.yaml`.
+Use the actual layout from `stitch_hdfc_fund_facts_assistant.zip`. The production UI lives in `public/stitch.html` (including the export's Tailwind styling) and `public/stitch.js`; `vercel.json` maps `/` to `/stitch.html`. The downloaded ZIP contained mock facts and references to SID/factsheets, so those are removed from the working UI. The approved corpus remains the five Groww pages in `config/sources.yaml`.
 
 Implement the browser UI with:
 
@@ -950,7 +950,7 @@ Tests must assert that the synthetic value is absent from logs, traces, prompts,
 - [ ] Every response contains exactly one approved source link.
 - [ ] Every answer is no more than three sentences.
 - [ ] Source update date is displayed.
-- [ ] Stitch-inspired browser UI shows the disclaimer and example questions.
+- [ ] Stitch export browser UI shows the disclaimer and example questions.
 - [ ] Automated tests pass.
 
 ## 14. Recommended Build Order
@@ -966,7 +966,7 @@ Implement and verify in this order:
 7. Calibrate retrieval with labelled questions.
 8. Add sensitive-data and intent guardrails.
 9. Add Groq generation and strict response validation.
-10. Build the Stitch-inspired browser UI and connect it to `/api/query`.
+10. Build the Stitch export browser UI and connect it to `/api/query`.
 11. Run all edge cases, acceptance tests, and the demo flow.
 
 Do not begin LLM prompt tuning until the extracted documents, chunks, and retrieval results are correct.
