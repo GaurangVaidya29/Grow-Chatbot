@@ -9,6 +9,7 @@ ROUTING = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
 
 
 def test_vercel_root_uses_stitch_ui_and_existing_api_contract():
+    assert ROUTING["framework"] is None
     assert {"source": "/", "destination": "/stitch.html"} in ROUTING["rewrites"]
     assert 'id="question-form"' in HTML
     assert "fetch('/api/query'" in SCRIPT
