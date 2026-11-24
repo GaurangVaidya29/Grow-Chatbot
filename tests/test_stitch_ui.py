@@ -6,6 +6,7 @@ ROOT = Path(__file__).resolve().parents[1]
 HTML = (ROOT / "public/stitch.html").read_text(encoding="utf-8")
 SCRIPT = (ROOT / "public/stitch.js").read_text(encoding="utf-8")
 ROUTING = json.loads((ROOT / "vercel.json").read_text(encoding="utf-8"))
+VERCEL_IGNORE = (ROOT / ".vercelignore").read_text(encoding="utf-8").splitlines()
 
 
 def test_vercel_root_uses_stitch_ui_and_existing_api_contract():
@@ -16,6 +17,9 @@ def test_vercel_root_uses_stitch_ui_and_existing_api_contract():
     assert "payload.category" in SCRIPT
     assert "payload.citation" in SCRIPT
     assert "payload.source_updated_at" in SCRIPT
+    assert "/query.py" in VERCEL_IGNORE
+    assert "!/api/query.py" in VERCEL_IGNORE
+    assert "query.py" not in VERCEL_IGNORE
 
 
 def test_stitch_ui_contains_no_exported_sample_facts_or_sources():
