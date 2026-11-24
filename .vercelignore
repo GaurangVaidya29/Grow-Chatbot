@@ -1,0 +1,22 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.pytest_cache/
+app/
+config/
+scripts/
+tests/
+data/raw/
+data/extracted/
+data/chunks/
+data/chroma/
+data/evaluations/
+PRD.md
+architecture.md
+implementation.md
+Problem Statement.txt
+ingest.py
+query.py
+requirements-local.txt

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/query.py": {
+      "maxDuration": 60,
+      "includeFiles": "data/vercel/index.json",
+      "excludeFiles": "{app/**,tests/**,scripts/**,config/**,data/raw/**,data/extracted/**,data/chunks/**,data/chroma/**,data/evaluations/**,.venv/**}"
+    }
+  },
+  "rewrites": [
+    { "source": "/", "destination": "/index.html" }
+  ]
+}

@@ -1,11 +1,5 @@
-beautifulsoup4
-chromadb
-groq
-httpx
-pydantic
-pydantic-settings
-pyyaml
-sentence-transformers
-streamlit
-pytest
+groq==1.7.0
+huggingface-hub==2.4.0
+httpx==0.28.1
+numpy==2.5.1
 

@@ -18,7 +18,7 @@ On managed Windows devices, Application Control may block native ML DLLs inside 
 ```text
 python -m venv .venv
 .venv\Scripts\activate
-python -m pip install -r requirements.txt
+python -m pip install -r requirements-local.txt
 copy .env.example .env
 ```
 
@@ -66,6 +66,33 @@ streamlit run app/ui.py
 ```
 
 The UI checks index compatibility at startup and stays disabled until a valid index is available. It displays the service-provided answer state, exactly one approved source, and the source retrieval date. Set `UI_DEBUG=true` only for a local demo to show safe IDs; it is disabled by default and never shows prompts, secrets, sensitive matches, or conversation history.
+
+## Deploy on Vercel
+
+Vercel uses the lightweight static frontend in `public/` and the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
+
+Add these Environment Variables in Vercel for Production, Preview, and Development:
+
+```text
+LLM_PROVIDER=groq
+LLM_MODEL=qwen/qwen3.8-27b
+GROQ_API_KEY=<your Groq key>
+HF_TOKEN=<your Hugging Face token with inference permission>
+HF_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+```
+
+Use the following project settings:
+
+```text
+Framework Preset: Other
+Root Directory: .
+Build Command: leave empty
+Output Directory: leave empty
+Install Command: leave empty (Vercel installs requirements.txt)
+Python: 3.12 (from .python-version)
+```
+
+After changing environment variables, redeploy. To refresh the deployed vector data after a new ingestion/index build, run `python scripts/export_vercel_index.py`, commit `data/vercel/index.json`, and redeploy.
 
 ## Product constraints
 
