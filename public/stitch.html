@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#00d09c">
+  <meta name="description" content="Source-backed facts about supported HDFC mutual funds.">
+  <title>Groww Facts | Mutual Fund Facts Assistant</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/stitch.css">
+  <script src="/stitch.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><div class="shell topbar-inner">
+    <a class="brand" href="/" aria-label="Groww Facts home"><span class="brand-mark" aria-hidden="true">↗</span><span>Groww <small>FACTS</small><em>Mutual Fund Reference</em></span></a>
+    <div class="topbar-actions"><span class="verified">✓ Verified sources</span><span class="facts-pill">Facts-only</span></div>
+  </div></header>
+  <main class="shell">
+    <section class="hero card" aria-labelledby="page-title">
+      <div class="hero-content"><span class="eyebrow">Approved Groww source pages</span><h1 id="page-title">Mutual fund facts, made simple</h1><p>Ask factual questions about four supported HDFC funds. Answers are grounded in approved public Groww pages.</p></div>
+      <div class="hero-foot"><span class="green-dot" aria-hidden="true"></span><strong>Facts-only.</strong> No investment advice or performance comparisons.</div>
+    </section>
+
+    <section class="section" aria-labelledby="fund-title"><div class="section-heading"><h2 id="fund-title">Select an HDFC fund <span>(optional)</span></h2><button id="clear-fund" class="text-button" type="button" hidden>Clear fund</button></div>
+      <div id="funds" class="fund-grid" role="group" aria-label="Supported funds">
+        <button type="button" class="fund-card" data-fund="HDFC Large Cap Fund Direct Growth" aria-pressed="false"><small>LARGE CAP</small><strong>HDFC Large Cap Fund</strong><span>Direct Growth</span></button>
+        <button type="button" class="fund-card" data-fund="HDFC Flexi Cap Direct Plan Growth" aria-pressed="false"><small>FLEXI CAP</small><strong>HDFC Flexi Cap Fund</strong><span>Direct Growth</span></button>
+        <button type="button" class="fund-card" data-fund="HDFC ELSS Tax Saver Fund Direct Plan Growth" aria-pressed="false"><small>ELSS</small><strong>HDFC ELSS Tax Saver</strong><span>Direct Growth</span></button>
+        <button type="button" class="fund-card" data-fund="HDFC Mid Cap Fund Direct Growth" aria-pressed="false"><small>MID CAP</small><strong>HDFC Mid Cap Fund</strong><span>Direct Growth</span></button>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="topics-title"><div class="section-heading"><h2 id="topics-title">Explore a fact</h2><span>Choose a topic to fill the question</span></div>
+      <div id="topics" class="chips" role="group" aria-label="Fact topics"><button type="button" data-topic="expense ratio">Expense ratio</button><button type="button" data-topic="exit load">Exit load</button><button type="button" data-topic="minimum SIP">Minimum SIP</button><button type="button" data-topic="lock-in period">Lock-in period</button><button type="button" data-topic="risk level">Risk level</button><button type="button" data-topic="benchmark">Benchmark</button></div>
+    </section>
+
+    <section class="section" aria-labelledby="examples-title"><div class="section-heading"><h2 id="examples-title">Suggested questions</h2><span>Click to fill the form</span></div>
+      <div id="examples" class="examples"><button type="button" data-question="What is the expense ratio of HDFC Large Cap Fund Direct Growth?"><small>EXPENSE RATIO</small>What is the expense ratio of HDFC Large Cap Fund Direct Growth?</button><button type="button" data-question="What is the lock-in period of HDFC ELSS Tax Saver Fund?"><small>LOCK-IN</small>What is the lock-in period of HDFC ELSS Tax Saver Fund?</button><button type="button" data-question="What is the exit load of HDFC Mid Cap Fund?"><small>EXIT LOAD</small>What is the exit load of HDFC Mid Cap Fund?</button></div>
+    </section>
+
+    <section class="ask card" aria-labelledby="ask-title"><form id="question-form" novalidate><div class="form-heading"><label id="ask-title" for="question">Ask your factual question</label><span id="count">0 / 1000</span></div><textarea id="question" maxlength="1000" rows="4" placeholder="e.g. What is the minimum SIP for HDFC Flexi Cap Fund?" aria-describedby="question-help validation"></textarea><p id="validation" class="validation" role="alert" hidden></p><div class="form-footer"><p id="question-help">Please do not enter PAN, Aadhaar, account numbers, OTPs, email addresses, or phone numbers.</p><button id="submit" type="submit" class="primary">Ask question</button></div></form></section>
+
+    <section id="result" class="result card" aria-live="polite" aria-atomic="true" hidden><div class="result-header"><span id="result-label"></span><span id="result-date"></span></div><div class="result-body"><span class="answer-label">ANSWER</span><p id="answer"></p><a id="citation" class="citation" target="_blank" rel="noopener noreferrer" hidden><span><small>APPROVED SOURCE</small><strong id="citation-label"></strong></span><span aria-hidden="true">↗</span></a><div id="answer-actions" class="answer-actions" hidden><button id="copy" type="button">Copy answer &amp; source</button><div id="followups" class="followups" aria-label="Ask another factual question"></div></div></div></section>
+  </main>
+  <footer class="footer"><div class="shell"><p>Supported funds: HDFC Large Cap, Flexi Cap, ELSS Tax Saver, and Mid Cap.</p><p>Information is sourced from approved public Groww pages. Facts-only. No investment advice.</p></div></footer>
+</body>
+</html>

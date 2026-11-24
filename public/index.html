@@ -4,46 +4,123 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Facts-only HDFC mutual fund FAQ assistant" />
+    <meta name="theme-color" content="#00D09C" />
     <title>Groww Mutual Fund Facts Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <main class="shell">
-      <section class="hero">
-        <span class="eyebrow">Verified fund information</span>
-        <h1>Groww Mutual Fund<br /><span>Facts Assistant</span></h1>
-        <p class="intro">Ask a factual question about the supported HDFC mutual fund pages. Answers are grounded in the approved source index.</p>
-        <div class="notice"><span aria-hidden="true">◆</span><strong>Facts-only.</strong> No investment advice.</div>
-      </section>
-
-      <section class="panel" aria-labelledby="ask-heading">
-        <h2 id="ask-heading">Ask about a fund</h2>
-        <div class="examples" aria-label="Example questions">
-          <button class="example" type="button">What is the expense ratio of HDFC Large Cap Fund Direct Growth?</button>
-          <button class="example" type="button">What is the lock-in period of HDFC ELSS Tax Saver Fund?</button>
-          <button class="example" type="button">What is the exit load of HDFC Mid Cap Fund?</button>
+    <header class="topbar">
+      <nav class="nav-content" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="Groww Facts home">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span>Groww Facts</span>
+        </a>
+        <div class="trust-group">
+          <span class="verified-sources">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5.5 5.8v5.5c0 4.4 2.7 7.7 6.5 9.7 3.8-2 6.5-5.3 6.5-9.7V5.8L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            Verified sources
+          </span>
+          <span class="facts-badge">Facts only</span>
         </div>
-        <form id="question-form">
-          <label for="question">Your question</label>
-          <textarea id="question" maxlength="1000" rows="4" placeholder="Ask about an expense ratio, exit load, SIP, lock-in, risk, or benchmark" required></textarea>
-          <div class="form-footer">
-            <span><span id="character-count">0</span>/1000</span>
-            <button id="submit" class="primary" type="submit">Ask question</button>
-          </div>
-        </form>
-        <p class="privacy">Do not enter PAN, Aadhaar, account numbers, OTPs, email addresses, or phone numbers.</p>
+      </nav>
+    </header>
+
+    <main class="page-shell">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">HDFC mutual fund information</p>
+        <h1 id="page-title">Mutual fund facts,<br /><span>made simple.</span></h1>
+        <p class="intro">Ask factual questions about supported HDFC mutual funds. Every answer is grounded in approved Groww source pages.</p>
+        <div class="safety-notice" role="note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5.5 5.8v5.5c0 4.4 2.7 7.7 6.5 9.7 3.8-2 6.5-5.3 6.5-9.7V5.8L12 3Z"/><path d="M12 8v5M12 16.5v.1"/></svg>
+          <span><strong>Facts-only.</strong> No investment advice.</span>
+        </div>
       </section>
 
-      <section id="result" class="result hidden" aria-live="polite">
+      <section id="examples" class="examples-section" aria-labelledby="examples-heading">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Quick start</p>
+            <h2 id="examples-heading">Try an example</h2>
+          </div>
+          <p>Choose a question to fill the form.</p>
+        </div>
+        <div class="examples" aria-label="Example questions">
+          <button class="example" type="button">
+            <span class="question-icon" aria-hidden="true">?</span>
+            <span>What is the expense ratio of HDFC Large Cap Fund Direct Growth?</span>
+          </button>
+          <button class="example" type="button">
+            <span class="question-icon" aria-hidden="true">?</span>
+            <span>What is the lock-in period of HDFC ELSS Tax Saver Fund?</span>
+          </button>
+          <button class="example" type="button">
+            <span class="question-icon" aria-hidden="true">?</span>
+            <span>What is the exit load of HDFC Mid Cap Fund?</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="question-card" aria-labelledby="ask-heading">
+        <div class="card-heading">
+          <span class="card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3v-3A2.5 2.5 0 0 1 4 13.5v-7Z"/><path d="M9 8h6M9 12h4"/></svg>
+          </span>
+          <div>
+            <p class="section-kicker">Approved-source search</p>
+            <h2 id="ask-heading">Ask about a fund</h2>
+          </div>
+        </div>
+
+        <form id="question-form" novalidate>
+          <label for="question">Your question</label>
+          <textarea id="question" maxlength="1000" rows="4" placeholder="Ask about an expense ratio, exit load, minimum SIP, lock-in period, risk level, or benchmark" aria-describedby="question-help character-count" required></textarea>
+          <div class="input-meta">
+            <p id="question-help">Use a specific scheme name for the most accurate answer.</p>
+            <span><span id="character-count">0</span> / 1000</span>
+          </div>
+          <p id="validation-message" class="validation-message" role="alert" hidden></p>
+          <button id="submit" class="primary" type="submit">
+            <span class="button-label">Ask question</span>
+            <span class="loading-spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <p id="privacy-note" class="privacy-note">
+          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+          <span>Do not enter PAN, Aadhaar, account numbers, OTPs, email addresses, or phone numbers.</span>
+        </p>
+      </section>
+
+      <section id="result" class="result-card hidden" aria-live="polite" aria-atomic="true">
         <div class="result-heading">
-          <span id="result-badge" class="badge"></span>
-          <span id="result-category"></span>
+          <span id="result-badge" class="status-dot" aria-hidden="true"></span>
+          <span id="result-category">Verified answer</span>
         </div>
         <p id="answer"></p>
-        <a id="citation" class="citation" target="_blank" rel="noopener noreferrer"></a>
+        <a id="citation" class="citation" target="_blank" rel="noopener noreferrer">
+          <span class="source-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v5h5M10 12h6M10 16h6"/></svg>
+          </span>
+          <span class="citation-copy"><small>Source</small><strong id="citation-label"></strong></span>
+          <svg class="external-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8"/><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+        </a>
         <p id="source-date" class="source-date"></p>
       </section>
     </main>
+
+    <footer id="source-policy" class="footer">
+      <div class="footer-content">
+        <p>Information is sourced from approved public Groww pages. This assistant does not provide investment advice.</p>
+        <nav aria-label="Footer navigation">
+          <a href="#examples">Supported funds</a>
+          <a href="#privacy-note">Privacy</a>
+          <a href="#source-policy">Source policy</a>
+        </nav>
+      </div>
+    </footer>
     <script src="/app.js" defer></script>
   </body>
 </html>

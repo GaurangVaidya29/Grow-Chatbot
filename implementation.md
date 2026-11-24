@@ -58,7 +58,7 @@ grow-chatbot/
 │   ├── retrieval.py
 │   ├── guardrails.py
 │   ├── llm.py
-│   └── ui.py
+│   └── ui.py             # legacy local UI
 ├── config/
 │   ├── config.yaml
 │   └── sources.yaml
@@ -99,7 +99,6 @@ pydantic
 pydantic-settings
 pyyaml
 sentence-transformers
-streamlit
 pytest
 ```
 
@@ -686,11 +685,13 @@ Use fixed templates instead of the LLM for:
 - Every response includes exactly one approved link.
 - All answers and refusals stay within three sentences.
 
-## 10. Phase 8: Build the Streamlit UI
+## 10. Phase 8: Build the Stitch-inspired browser UI
 
 ### 10.1 UI content
 
-Implement `app/ui.py` with:
+Use `stitch_hdfc_fund_facts_assistant.zip` as the design reference. The production UI lives in `public/stitch.html`, `public/stitch.css`, and `public/stitch.js`; `vercel.json` maps `/` to `/stitch.html`. The downloaded ZIP contained mock facts and references to SID/factsheets, so those are not copied into the working UI. The approved corpus remains the five Groww pages in `config/sources.yaml`.
+
+Implement the browser UI with:
 
 - Product title.
 - Welcome message.
@@ -702,6 +703,9 @@ Implement `app/ui.py` with:
 - Answer/refusal card.
 - One descriptive source link.
 - `Last updated from sources: <date>`.
+- Four-fund selector, fact-topic shortcuts, copy answer with its source, and standalone follow-up questions.
+
+The browser sends `{ "question": "..." }` to `POST /api/query` and renders only the response's `category`, `answer`, `citation`, and `source_updated_at`. Groq and Hugging Face keys stay on the server. Sample answers and dates must never be used as fallback data.
 
 ### 10.2 Suggested example questions
 
@@ -745,13 +749,15 @@ Do not show:
 - Sensitive-data matches.
 - Stored user history.
 
-Disable the debug panel by default in a public deployment.
+Do not include a public debug panel in the Stitch UI. The legacy local `app/ui.py` may retain its gated demo panel.
 
-### 10.5 Run command
+### 10.5 Run and deployment
 
 ```text
-streamlit run app/ui.py
+python -m http.server 8088 --bind 127.0.0.1 --directory public
 ```
+
+The local static server previews the design only; `/api/query` must be served by the deployed Vercel function or a compatible local API. Deploy with `vercel.json` and configured `GROQ_API_KEY` and `HF_TOKEN`.
 
 ### 10.6 UI edge cases
 
@@ -944,7 +950,7 @@ Tests must assert that the synthetic value is absent from logs, traces, prompts,
 - [ ] Every response contains exactly one approved source link.
 - [ ] Every answer is no more than three sentences.
 - [ ] Source update date is displayed.
-- [ ] Streamlit UI shows the disclaimer and example questions.
+- [ ] Stitch-inspired browser UI shows the disclaimer and example questions.
 - [ ] Automated tests pass.
 
 ## 14. Recommended Build Order
@@ -960,7 +966,7 @@ Implement and verify in this order:
 7. Calibrate retrieval with labelled questions.
 8. Add sensitive-data and intent guardrails.
 9. Add Groq generation and strict response validation.
-10. Build the Streamlit UI.
+10. Build the Stitch-inspired browser UI and connect it to `/api/query`.
 11. Run all edge cases, acceptance tests, and the demo flow.
 
 Do not begin LLM prompt tuning until the extracted documents, chunks, and retrieval results are correct.

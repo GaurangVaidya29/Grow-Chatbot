@@ -58,7 +58,7 @@ The architecture deliberately favors inspectability and deterministic safeguards
 | Concern | Reference choice | Rationale |
 |---|---|---|
 | Runtime | Python 3.11+ | Strong support for scraping, embeddings, ChromaDB, and rapid prototyping. |
-| UI | Streamlit | Small interactive UI, easy hosting, and suitable debug/demo views. |
+| UI | Stitch-inspired HTML, CSS, and JavaScript in `public/stitch.*` | Responsive browser interface hosted by Vercel and connected to `/api/query`. |
 | Configuration | YAML + Pydantic settings + `.env` | Typed validation and clean separation of settings from secrets. |
 | HTTP loading | `httpx` | Timeouts, redirect controls, response limits, and testable client abstraction. |
 | HTML extraction | Beautiful Soup with source-specific selectors and generic fallback | Preserves labelled facts while keeping parsing inspectable. |
@@ -76,12 +76,12 @@ Equivalent libraries may be substituted if they preserve the interfaces, control
 
 ```mermaid
 flowchart LR
-    U[Retail or support user] --> UI[Streamlit UI]
+    U[Retail or support user] --> UI[Stitch-inspired browser UI]
     D[Developer or evaluator] --> CLI[Ingestion and evaluation CLI]
     CLI --> S[Approved public source pages]
     CLI --> FS[(Local artifact store)]
     CLI --> C[(ChromaDB)]
-    UI --> QS[Query service]
+    UI --> QS[POST /api/query]
     QS --> C
     QS --> FS
     QS --> LLM[Groq API]
@@ -154,9 +154,7 @@ The web application loads the source registry and index manifest at startup. Eac
 
 Example command:
 
-```text
-streamlit run app/ui/main.py
-```
+The production browser loads `public/stitch.html` from `/` and sends `POST /api/query` with a JSON `question`. The Vercel function uses the exported read-only index, Hugging Face query embeddings, and Groq answer generation. Local CLI queries use ChromaDB and the locally cached MiniLM model.
 
 ### 8.3 Evaluation path
 
@@ -436,9 +434,9 @@ class QueryService:
 
 It does not persist raw requests or responses. When debug tracing is explicitly enabled, it passes only redacted fields and internal IDs to the trace writer.
 
-### 9.16 Streamlit UI
+### 9.16 Stitch-inspired browser UI
 
-The UI is a thin client over `QueryService` and contains no retrieval or policy logic. It displays:
+`stitch_hdfc_fund_facts_assistant.zip` is the supplied design source. The active frontend is `public/stitch.html`, `public/stitch.css`, and `public/stitch.js`; `vercel.json` maps `/` to it. The ZIP's sample answer, factsheet claims, and demo routing are not authoritative. The UI uses the category, answer, citation, and source date returned by `/api/query` and contains no retrieval or policy logic. It displays:
 
 - Welcome message.
 - Three example questions.
@@ -446,9 +444,9 @@ The UI is a thin client over `QueryService` and contains no retrieval or policy 
 - Input and submit control.
 - Loading, answer, clarification, refusal, unsupported, privacy warning, and error states.
 - Answer text, one descriptive citation, and source refresh date.
-- Optional development-only debug expander with category, chunk IDs, safe chunk excerpts, and scores.
+- Fund selector, fact-topic shortcuts, copyable sourced answer, and standalone follow-up prompts.
 
-The debug expander must be disabled in public deployment unless all traces are redacted and disclosure is intentional.
+It must not ship hard-coded factual answers, fake source dates, unapproved citation URLs, API keys, or a public debug panel. The earlier `app/ui.py` remains a legacy local interface and is not the product UI.
 
 ## 10. Request Sequence
 
@@ -986,28 +984,27 @@ Prototype performance targets from the PRD:
 
 ```text
 Developer workstation
-├── Streamlit process
+├── static Stitch-inspired browser UI
 ├── local embedding model cache
 ├── persistent Chroma directory
 ├── inspectable data artifacts
 └── .env with Groq key
 ```
 
-Ingestion runs before the UI. The active index and manifests are mounted/read directly by the Streamlit process.
+Ingestion runs before query serving. The local CLI reads Chroma artifacts; the deployed API reads `data/vercel/index.json`.
 
 ### 21.2 Hosted prototype
 
-Use one application container/process plus persistent or prebuilt read-only index artifacts:
+Vercel serves the static UI and a Python serverless function with a prebuilt read-only vector index:
 
 ```mermaid
 flowchart LR
-    B[Browser] --> A[Hosted Streamlit application]
-    A --> V[(Read-only active Chroma index)]
-    A --> M[(Source and index manifests)]
+    B[Browser] --> S[Static Stitch-inspired UI]
+    S --> A[POST /api/query]
+    A --> V[(Read-only exported vector index)]
+    A --> H[Hugging Face embeddings]
     A --> G[Groq API]
-    S[Controlled ingestion job] --> P[(Persistent artifact volume)]
-    P --> V
-    P --> M
+    J[Controlled ingestion job] --> V
 ```
 
 Ingestion should be a controlled build/deployment step rather than a public web endpoint. Public deployment contains no ingestion trigger and no arbitrary URL input.
@@ -1176,7 +1173,7 @@ Live source ingestion and paid LLM evaluation should be separate manual or sched
 5. Sensitive-data gate, intent router, scheme/fact resolver, and templates.
 6. Retriever and no-evidence behavior.
 7. Groq adapter, structured answer generator, and response validator.
-8. Query orchestrator and Streamlit UI.
+8. Query orchestrator and Stitch-inspired browser UI.
 9. Evaluation runner, observability, acceptance tests, and packaging.
 
 Each step should end with usable artifacts and tests before the next stage is added.
