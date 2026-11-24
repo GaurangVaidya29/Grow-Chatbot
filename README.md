@@ -65,11 +65,11 @@ The pipeline checks sensitive data and restricted intents before embedding the q
 python -m http.server 8088 --bind 127.0.0.1 --directory public
 ```
 
-Open `http://127.0.0.1:8088/stitch.html` to preview the layout. The static server does not provide `/api/query`; interactive factual answers require the Vercel API or a compatible local API. The active UI uses the supplied Stitch layout in `public/stitch.html` and the live API behavior in `public/stitch.js`. The page loads Tailwind from its CDN. The earlier `app/ui.py` is retained only as a legacy local prototype.
+Open `http://127.0.0.1:8088/` to preview the layout. The static server does not provide `/api/query`; interactive factual answers require the Vercel API or a compatible local API. The active UI uses the supplied Stitch layout in `public/index.html` (also available at `public/stitch.html`) and the live API behavior in `public/stitch.js`. The page loads Tailwind from its CDN. The earlier `app/ui.py` is retained only as a legacy local prototype.
 
 ## Deploy on Vercel
 
-Vercel maps `/` to the Stitch export frontend and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
+Vercel serves `public/index.html` at `/` and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
 
 Add these Environment Variables in Vercel for Production, Preview, and Development:
 

@@ -689,7 +689,7 @@ Use fixed templates instead of the LLM for:
 
 ### 10.1 UI content
 
-Use the actual layout from `stitch_hdfc_fund_facts_assistant.zip`. The production UI lives in `public/stitch.html` (including the export's Tailwind styling) and `public/stitch.js`; `vercel.json` maps `/` to `/stitch.html`. The downloaded ZIP contained mock facts and references to SID/factsheets, so those are removed from the working UI. The approved corpus remains the five Groww pages in `config/sources.yaml`.
+Use the actual layout from `stitch_hdfc_fund_facts_assistant.zip`. The production UI lives in `public/index.html` (including the export's Tailwind styling) and `public/stitch.js`; `public/stitch.html` is a matching compatibility copy. Vercel serves `public/index.html` at `/`. The downloaded ZIP contained mock facts and references to SID/factsheets, so those are removed from the working UI. The approved corpus remains the five Groww pages in `config/sources.yaml`.
 
 Implement the browser UI with:
 

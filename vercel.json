@@ -7,8 +7,5 @@
       "includeFiles": "data/vercel/index.json",
       "excludeFiles": "{app/**,tests/**,scripts/**,config/**,data/raw/**,data/extracted/**,data/chunks/**,data/chroma/**,data/evaluations/**,.venv/**}"
     }
-  },
-  "rewrites": [
-    { "source": "/", "destination": "/stitch.html" }
-  ]
+  }
 }

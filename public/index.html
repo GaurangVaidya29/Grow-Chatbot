@@ -1,126 +1,314 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Facts-only HDFC mutual fund FAQ assistant" />
-    <meta name="theme-color" content="#00D09C" />
-    <title>Groww Mutual Fund Facts Assistant</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <nav class="nav-content" aria-label="Primary navigation">
-        <a class="brand" href="/" aria-label="Groww Facts home">
-          <span class="brand-mark" aria-hidden="true"><span></span></span>
-          <span>Groww Facts</span>
-        </a>
-        <div class="trust-group">
-          <span class="verified-sources">
-            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5.5 5.8v5.5c0 4.4 2.7 7.7 6.5 9.7 3.8-2 6.5-5.3 6.5-9.7V5.8L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>
-            Verified sources
-          </span>
-          <span class="facts-badge">Facts only</span>
-        </div>
-      </nav>
-    </header>
+<!DOCTYPE html>
 
-    <main class="page-shell">
-      <section class="hero" aria-labelledby="page-title">
-        <p class="eyebrow">HDFC mutual fund information</p>
-        <h1 id="page-title">Mutual fund facts,<br /><span>made simple.</span></h1>
-        <p class="intro">Ask factual questions about supported HDFC mutual funds. Every answer is grounded in approved Groww source pages.</p>
-        <div class="safety-notice" role="note">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3 5.5 5.8v5.5c0 4.4 2.7 7.7 6.5 9.7 3.8-2 6.5-5.3 6.5-9.7V5.8L12 3Z"/><path d="M12 8v5M12 16.5v.1"/></svg>
-          <span><strong>Facts-only.</strong> No investment advice.</span>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Groww Facts - Mutual Fund Facts Assistant</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#00D09C',
+            'brand-dark': '#008F76',
+            charcoal: '#44475B',
+            muted: '#7C7E8C',
+            canvas: '#F6F6F7',
+            card: '#FFFFFF',
+            outline: '#E5E7EB',
+            danger: '#DC2626',
+            amber: '#D97706',
+            info: '#2563EB',
+            dark: {
+              bg: '#0E1015',
+              surface: '#181A20',
+              elevated: '#242936',
+              border: '#2E3440',
+              text: '#F3F4F6',
+              muted: '#9CA3AF',
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+<script>
+    // Immediately apply saved or system theme to prevent flash
+    (function() {
+      const savedTheme = localStorage.getItem('groww_facts_theme');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    })();
+  </script>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #E5E7EB;
+      border-radius: 9999px;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #2E3440;
+    }
+    .focus-ring:focus-visible {
+      outline: 2px solid #00D09C;
+      outline-offset: 2px;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand/20 bg-canvas text-charcoal dark:bg-dark-bg dark:text-dark-text">
+<!-- TOP HEADER -->
+<header class="sticky top-0 z-40 bg-white dark:bg-dark-surface border-b border-outline dark:border-dark-border px-4 py-3 shadow-xs transition-colors duration-200">
+<div class="max-w-2xl mx-auto flex items-center justify-between">
+<!-- Logo & Product Name -->
+<div class="flex items-center gap-2.5">
+<div class="relative w-9 h-9 rounded-xl overflow-hidden shrink-0 flex items-center justify-center shadow-xs ring-1 ring-black/5 dark:ring-white/10 bg-white dark:bg-dark-elevated">
+<span role="img" aria-label="Groww Facts mark" class="text-brand font-bold text-2xl leading-none">↗</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="text-base font-bold text-charcoal dark:text-dark-text tracking-tight">Groww</span>
+<span class="text-xs font-semibold px-1.5 py-0.5 rounded bg-brand/10 dark:bg-brand/20 text-brand-dark dark:text-brand uppercase tracking-wide">Facts</span>
+</div>
+<span class="text-[10px] text-muted dark:text-dark-muted -mt-0.5">Mutual Fund Reference</span>
+</div>
+</div>
+<!-- Actions & Trust Badges -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#F0FDF4] dark:bg-[#00D09C]/10 border border-[#DCFCE7] dark:border-[#00D09C]/25 text-[11px] font-medium text-brand-dark dark:text-brand">
+<svg class="w-3.5 h-3.5 text-brand shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path>
+</svg>
+<span class="hidden sm:inline">Verified Sources</span>
+<span class="sm:hidden">Verified</span>
+</div>
+<span class="hidden sm:inline text-[11px] font-semibold text-charcoal dark:text-dark-text bg-canvas dark:bg-dark-elevated border border-outline dark:border-dark-border px-2 py-0.5 rounded">Facts-only</span>
+<!-- Sleek Theme Toggle Switch -->
+<button aria-label="Toggle dark mode" class="p-2 rounded-xl bg-canvas hover:bg-slate-200/70 dark:bg-dark-elevated dark:hover:bg-dark-elevated/80 border border-outline dark:border-dark-border text-charcoal dark:text-dark-text transition-all focus-ring relative group" id="themeToggleBtn" type="button">
+<!-- Sun Icon (Shown in Dark Mode) -->
+<svg class="w-4 h-4 hidden dark:block text-amber-400 group-hover:rotate-45 transition-transform" fill="none" id="sunIcon" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+<!-- Moon Icon (Shown in Light Mode) -->
+<svg class="w-4 h-4 block dark:hidden text-charcoal group-hover:-rotate-12 transition-transform" fill="none" id="moonIcon" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CONTAINER -->
+<main class="w-full max-w-2xl mx-auto px-4 py-5 flex-1 space-y-6">
+<!-- HERO SECTION -->
+<section class="bg-white dark:bg-dark-surface rounded-2xl p-5 border border-outline dark:border-dark-border shadow-sm relative overflow-hidden transition-colors duration-200">
+<div class="space-y-2">
+<div class="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-dark dark:text-brand bg-brand/10 dark:bg-brand/15 px-2.5 py-1 rounded-full">
+<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          Approved Groww source reference
         </div>
-      </section>
-
-      <section id="examples" class="examples-section" aria-labelledby="examples-heading">
-        <div class="section-heading">
-          <div>
-            <p class="section-kicker">Quick start</p>
-            <h2 id="examples-heading">Try an example</h2>
-          </div>
-          <p>Choose a question to fill the form.</p>
-        </div>
-        <div class="examples" aria-label="Example questions">
-          <button class="example" type="button">
-            <span class="question-icon" aria-hidden="true">?</span>
-            <span>What is the expense ratio of HDFC Large Cap Fund Direct Growth?</span>
-          </button>
-          <button class="example" type="button">
-            <span class="question-icon" aria-hidden="true">?</span>
-            <span>What is the lock-in period of HDFC ELSS Tax Saver Fund?</span>
-          </button>
-          <button class="example" type="button">
-            <span class="question-icon" aria-hidden="true">?</span>
-            <span>What is the exit load of HDFC Mid Cap Fund?</span>
-          </button>
-        </div>
-      </section>
-
-      <section class="question-card" aria-labelledby="ask-heading">
-        <div class="card-heading">
-          <span class="card-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v7a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 3v-3A2.5 2.5 0 0 1 4 13.5v-7Z"/><path d="M9 8h6M9 12h4"/></svg>
-          </span>
-          <div>
-            <p class="section-kicker">Approved-source search</p>
-            <h2 id="ask-heading">Ask about a fund</h2>
-          </div>
-        </div>
-
-        <form id="question-form" novalidate>
-          <label for="question">Your question</label>
-          <textarea id="question" maxlength="1000" rows="4" placeholder="Ask about an expense ratio, exit load, minimum SIP, lock-in period, risk level, or benchmark" aria-describedby="question-help character-count" required></textarea>
-          <div class="input-meta">
-            <p id="question-help">Use a specific scheme name for the most accurate answer.</p>
-            <span><span id="character-count">0</span> / 1000</span>
-          </div>
-          <p id="validation-message" class="validation-message" role="alert" hidden></p>
-          <button id="submit" class="primary" type="submit">
-            <span class="button-label">Ask question</span>
-            <span class="loading-spinner" aria-hidden="true"></span>
-          </button>
-        </form>
-
-        <p id="privacy-note" class="privacy-note">
-          <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
-          <span>Do not enter PAN, Aadhaar, account numbers, OTPs, email addresses, or phone numbers.</span>
+<h1 class="text-xl sm:text-2xl font-bold text-charcoal dark:text-dark-text tracking-tight">Mutual fund facts, made simple</h1>
+<p class="text-xs sm:text-sm text-muted dark:text-dark-muted leading-relaxed">
+          Short factual answers grounded in approved public Groww pages for four supported HDFC funds.
         </p>
-      </section>
-
-      <section id="result" class="result-card hidden" aria-live="polite" aria-atomic="true">
-        <div class="result-heading">
-          <span id="result-badge" class="status-dot" aria-hidden="true"></span>
-          <span id="result-category">Verified answer</span>
-        </div>
-        <p id="answer"></p>
-        <a id="citation" class="citation" target="_blank" rel="noopener noreferrer">
-          <span class="source-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 3h8l4 4v14H7z"/><path d="M15 3v5h5M10 12h6M10 16h6"/></svg>
-          </span>
-          <span class="citation-copy"><small>Source</small><strong id="citation-label"></strong></span>
-          <svg class="external-icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8"/><path d="M18 13v5a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
-        </a>
-        <p id="source-date" class="source-date"></p>
-      </section>
-    </main>
-
-    <footer id="source-policy" class="footer">
-      <div class="footer-content">
-        <p>Information is sourced from approved public Groww pages. This assistant does not provide investment advice.</p>
-        <nav aria-label="Footer navigation">
-          <a href="#examples">Supported funds</a>
-          <a href="#privacy-note">Privacy</a>
-          <a href="#source-policy">Source policy</a>
-        </nav>
+</div>
+<!-- Regulatory Notice Badge -->
+<div class="mt-4 pt-3 border-t border-outline dark:border-dark-border flex items-center justify-between text-xs text-charcoal dark:text-dark-text bg-canvas/70 dark:bg-dark-elevated/60 -mx-5 -mb-5 px-5 py-2.5">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-brand"></span>
+<span class="font-semibold text-[11px] sm:text-xs">Facts-only. No investment advice or performance returns.</span>
+</div>
+</div>
+</section>
+<!-- FUND SELECTOR -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<label class="text-xs font-bold text-charcoal dark:text-dark-text uppercase tracking-wider flex items-center gap-1.5">
+<span>1. Select HDFC Fund</span>
+<span class="text-muted dark:text-dark-muted font-normal text-[11px]">(Optional or choose for exact context)</span>
+</label>
+<button class="text-[11px] font-medium text-muted dark:text-dark-muted hover:text-charcoal dark:hover:text-dark-text hidden underline decoration-muted/40" id="clearFundBtn">Clear fund</button>
+</div>
+<div class="grid grid-cols-2 gap-2.5 sm:grid-cols-4" id="fundOptionsGroup">
+<!-- Fund 1 -->
+<button class="fund-btn text-left p-3 rounded-xl border border-outline dark:border-dark-border bg-white dark:bg-dark-surface hover:border-brand/50 dark:hover:border-brand/50 transition-all focus-ring relative group" data-fund="HDFC Large Cap Fund" type="button">
+<div class="flex items-start justify-between">
+<div class="w-2 h-2 rounded-full bg-outline dark:bg-dark-border group-data-[active=true]:bg-brand mt-1"></div>
+<span class="text-[10px] text-muted dark:text-dark-muted uppercase font-bold tracking-tight">Large Cap</span>
+</div>
+<p class="text-xs font-semibold text-charcoal dark:text-dark-text mt-1.5 leading-snug">HDFC Large Cap Fund</p>
+<span class="text-[10px] text-muted dark:text-dark-muted mt-0.5 block">Direct Growth</span>
+</button>
+<!-- Fund 2 -->
+<button class="fund-btn text-left p-3 rounded-xl border border-outline dark:border-dark-border bg-white dark:bg-dark-surface hover:border-brand/50 dark:hover:border-brand/50 transition-all focus-ring relative group" data-fund="HDFC Flexi Cap Fund" type="button">
+<div class="flex items-start justify-between">
+<div class="w-2 h-2 rounded-full bg-outline dark:bg-dark-border group-data-[active=true]:bg-brand mt-1"></div>
+<span class="text-[10px] text-muted dark:text-dark-muted uppercase font-bold tracking-tight">Flexi Cap</span>
+</div>
+<p class="text-xs font-semibold text-charcoal dark:text-dark-text mt-1.5 leading-snug">HDFC Flexi Cap Fund</p>
+<span class="text-[10px] text-muted dark:text-dark-muted mt-0.5 block">Direct Growth</span>
+</button>
+<!-- Fund 3 -->
+<button class="fund-btn text-left p-3 rounded-xl border border-outline dark:border-dark-border bg-white dark:bg-dark-surface hover:border-brand/50 dark:hover:border-brand/50 transition-all focus-ring relative group" data-fund="HDFC ELSS Tax Saver Fund" type="button">
+<div class="flex items-start justify-between">
+<div class="w-2 h-2 rounded-full bg-outline dark:bg-dark-border group-data-[active=true]:bg-brand mt-1"></div>
+<span class="text-[10px] text-muted dark:text-dark-muted uppercase font-bold tracking-tight">ELSS 80C</span>
+</div>
+<p class="text-xs font-semibold text-charcoal dark:text-dark-text mt-1.5 leading-snug">HDFC ELSS Tax Saver</p>
+<span class="text-[10px] text-muted dark:text-dark-muted mt-0.5 block">Direct Growth</span>
+</button>
+<!-- Fund 4 -->
+<button class="fund-btn text-left p-3 rounded-xl border border-outline dark:border-dark-border bg-white dark:bg-dark-surface hover:border-brand/50 dark:hover:border-brand/50 transition-all focus-ring relative group" data-fund="HDFC Mid Cap Fund" type="button">
+<div class="flex items-start justify-between">
+<div class="w-2 h-2 rounded-full bg-outline dark:bg-dark-border group-data-[active=true]:bg-brand mt-1"></div>
+<span class="text-[10px] text-muted dark:text-dark-muted uppercase font-bold tracking-tight">Mid Cap</span>
+</div>
+<p class="text-xs font-semibold text-charcoal dark:text-dark-text mt-1.5 leading-snug">HDFC Mid Cap Fund</p>
+<span class="text-[10px] text-muted dark:text-dark-muted mt-0.5 block">Direct Growth</span>
+</button>
+</div>
+</section>
+<!-- TOPIC SHORTCUTS -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="text-xs font-bold text-charcoal dark:text-dark-text uppercase tracking-wider">
+          2. Compose with Topic Shortcuts
+        </label>
+<span class="text-[11px] text-muted dark:text-dark-muted">Prefills factual prompt</span>
+</div>
+<div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar -mx-1 px-1">
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Expense ratio" type="button">
+          📊 Expense ratio
+        </button>
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Exit load" type="button">
+          🚪 Exit load
+        </button>
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Minimum SIP" type="button">
+          💳 Minimum SIP
+        </button>
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Lock-in period" type="button">
+          🔒 Lock-in period
+        </button>
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Risk level" type="button">
+          ⚠️ Risk level
+        </button>
+<button class="topic-chip whitespace-nowrap px-3 py-1.5 rounded-full bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-medium text-charcoal dark:text-dark-text hover:border-brand hover:text-brand-dark dark:hover:text-brand transition-all focus-ring shadow-xs" data-topic="Benchmark" type="button">
+          🎯 Benchmark
+        </button>
+</div>
+</section>
+<!-- EXAMPLE QUESTIONS -->
+<section class="space-y-2">
+<div class="flex items-center justify-between">
+<label class="text-xs font-bold text-charcoal dark:text-dark-text uppercase tracking-wider">
+          Suggested Questions
+        </label>
+<span class="text-[11px] text-muted dark:text-dark-muted">Click to ask instantly</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+<button class="example-card text-left p-3 rounded-xl bg-white dark:bg-dark-surface border border-outline dark:border-dark-border hover:border-brand/60 dark:hover:border-brand/60 hover:bg-emerald-50/20 dark:hover:bg-brand/5 transition-all focus-ring group shadow-xs" data-example="What is the expense ratio of HDFC Large Cap Fund Direct Growth?" type="button">
+<span class="text-[10px] text-brand-dark dark:text-brand font-semibold uppercase tracking-wider block mb-1">Expense Ratio</span>
+<p class="text-xs font-medium text-charcoal dark:text-dark-text group-hover:text-black dark:group-hover:text-white leading-snug">What is the expense ratio of HDFC Large Cap Fund Direct Growth?</p>
+</button>
+<button class="example-card text-left p-3 rounded-xl bg-white dark:bg-dark-surface border border-outline dark:border-dark-border hover:border-brand/60 dark:hover:border-brand/60 hover:bg-emerald-50/20 dark:hover:bg-brand/5 transition-all focus-ring group shadow-xs" data-example="What is the lock-in period of HDFC ELSS Tax Saver Fund?" type="button">
+<span class="text-[10px] text-brand-dark dark:text-brand font-semibold uppercase tracking-wider block mb-1">Statutory Lock-in</span>
+<p class="text-xs font-medium text-charcoal dark:text-dark-text group-hover:text-black dark:group-hover:text-white leading-snug">What is the lock-in period of HDFC ELSS Tax Saver Fund?</p>
+</button>
+<button class="example-card text-left p-3 rounded-xl bg-white dark:bg-dark-surface border border-outline dark:border-dark-border hover:border-brand/60 dark:hover:border-brand/60 hover:bg-emerald-50/20 dark:hover:bg-brand/5 transition-all focus-ring group shadow-xs" data-example="What is the exit load of HDFC Mid Cap Fund?" type="button">
+<span class="text-[10px] text-brand-dark dark:text-brand font-semibold uppercase tracking-wider block mb-1">Exit Charges</span>
+<p class="text-xs font-medium text-charcoal dark:text-dark-text group-hover:text-black dark:group-hover:text-white leading-snug">What is the exit load of HDFC Mid Cap Fund?</p>
+</button>
+</div>
+</section>
+<!-- QUESTION FORM -->
+<section class="bg-white dark:bg-dark-surface rounded-2xl p-4 sm:p-5 border border-outline dark:border-dark-border shadow-sm space-y-3 transition-colors duration-200">
+<form class="space-y-3" id="qaForm" >
+<div class="flex items-center justify-between">
+<label class="text-xs font-bold text-charcoal dark:text-dark-text uppercase tracking-wider" for="questionInput">
+            Ask Your Factual Question
+          </label>
+<span class="text-[11px] text-muted dark:text-dark-muted" id="charCounter">0 / 1000</span>
+</div>
+<div class="relative">
+<textarea aria-describedby="inputHint validationError" class="w-full text-sm text-charcoal dark:text-dark-text placeholder-muted/60 dark:placeholder-dark-muted/60 p-3 rounded-xl border border-outline dark:border-dark-border bg-canvas/30 dark:bg-dark-elevated focus:bg-white dark:focus:bg-dark-elevated focus:border-brand dark:focus:border-brand focus-ring transition-all resize-none leading-relaxed" id="questionInput" maxlength="1000" placeholder="e.g. What is the minimum SIP amount and benchmark for HDFC Flexi Cap Fund?" rows="3"></textarea>
+</div>
+<!-- Inline Validation Error -->
+<div class="hidden text-xs text-danger font-medium flex items-center gap-1.5 pt-0.5" id="validationError">
+<svg class="w-4 h-4 shrink-0" fill="currentColor" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" fill-rule="evenodd"></path>
+</svg>
+<span id="validationErrorText">Please enter a question to ask.</span>
+</div>
+<!-- Submit & Quick Action Bar -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-1">
+<p class="text-[11px] text-muted dark:text-dark-muted leading-tight" id="inputHint">
+            Do not enter PAN, Aadhaar, account numbers, OTPs, email addresses, or phone numbers.
+          </p>
+<button class="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-brand hover:bg-brand-dark active:scale-[0.99] text-white font-semibold text-sm transition-all focus-ring shadow-sm flex items-center justify-center gap-2" id="askBtn" type="submit">
+<span>Ask question</span>
+<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</button>
+</div>
+</form>
+</section>
+<!-- LIVE API RESPONSE AREA -->
+<section id="responseArea" class="space-y-4" aria-live="polite" aria-atomic="true" hidden>
+  <div id="stateLoading" class="bg-white dark:bg-dark-surface rounded-2xl p-6 border border-outline dark:border-dark-border shadow-sm text-center space-y-3" hidden>
+    <div class="w-10 h-10 mx-auto border-[3px] border-outline border-t-brand rounded-full animate-spin" aria-hidden="true"></div>
+    <p class="text-sm font-semibold">Checking approved Groww sources...</p>
+  </div>
+  <article id="stateVerifiedAnswer" class="bg-white dark:bg-dark-surface rounded-2xl border border-outline dark:border-dark-border shadow-sm overflow-hidden" hidden>
+    <div class="bg-[#F0FDF4] dark:bg-emerald-950/20 border-b border-[#DCFCE7] dark:border-dark-border px-4 py-3 flex flex-wrap gap-2 items-center justify-between">
+      <span class="text-xs font-bold text-brand-dark dark:text-brand uppercase tracking-wide">✓ Verified answer</span>
+      <span id="ansSourceDate" class="text-[11px] font-medium text-muted dark:text-dark-muted"></span>
+    </div>
+    <div class="p-5 space-y-4">
+      <div><span class="text-[11px] font-semibold text-muted dark:text-dark-muted uppercase tracking-wider">Answer</span><p id="ansText" class="mt-2 text-sm sm:text-base text-charcoal dark:text-dark-text font-medium leading-relaxed"></p></div>
+      <a id="ansCitationLink" class="bg-canvas dark:bg-dark-elevated rounded-xl p-3.5 border border-outline dark:border-dark-border flex items-center justify-between gap-3 text-xs font-semibold text-brand-dark dark:text-brand hover:underline focus-ring" target="_blank" rel="noopener noreferrer" hidden><span><small class="block text-[10px] font-bold uppercase text-muted dark:text-dark-muted">Approved Groww source</small><span id="ansCitationLabel"></span></span><span aria-hidden="true">↗</span></a>
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-outline dark:border-dark-border">
+        <button id="copyAnswerBtn" class="px-3 py-1.5 rounded-lg bg-white dark:bg-dark-surface border border-outline dark:border-dark-border text-xs font-semibold focus-ring" type="button">Copy answer &amp; source</button>
+        <div class="flex items-center gap-2 text-xs"><span class="text-muted dark:text-dark-muted">Helpful?</span><button id="helpfulYes" type="button" class="px-2 py-1 rounded-md border border-outline dark:border-dark-border focus-ring">Yes</button><button id="helpfulNo" type="button" class="px-2 py-1 rounded-md border border-outline dark:border-dark-border focus-ring">No</button><span id="feedbackThanks" class="text-brand-dark dark:text-brand" hidden>Thank you</span></div>
       </div>
-    </footer>
-    <script src="/app.js" defer></script>
-  </body>
-</html>
+      <div class="pt-3 border-t border-outline dark:border-dark-border"><span class="text-[11px] font-bold uppercase text-muted dark:text-dark-muted">Ask another factual question</span><div id="nextQuestionChips" class="flex flex-wrap gap-2 mt-2"></div></div>
+    </div>
+  </article>
+  <div id="stateMessage" class="bg-white dark:bg-dark-surface rounded-2xl border border-outline dark:border-dark-border shadow-sm p-5 space-y-3" hidden>
+    <h2 id="messageTitle" class="text-sm font-bold text-charcoal dark:text-dark-text"></h2>
+    <p id="messageText" class="text-sm text-charcoal dark:text-dark-text leading-relaxed"></p>
+    <a id="messageCitationLink" class="text-xs font-semibold text-brand-dark dark:text-brand hover:underline focus-ring" target="_blank" rel="noopener noreferrer" hidden><span id="messageCitationLabel"></span> ↗</a>
+    <p id="messageDate" class="text-[11px] text-muted dark:text-dark-muted"></p>
+    <div id="clarificationFunds" class="grid grid-cols-2 gap-2" hidden></div>
+  </div>
+</section>
+</main>
+<!-- SOURCE AND SCOPE FOOTER -->
+<footer class="bg-white dark:bg-dark-surface border-t border-outline dark:border-dark-border mt-8 py-5 px-4 text-center">
+  <div class="max-w-2xl mx-auto space-y-2 text-[11px] text-muted dark:text-dark-muted">
+    <p><strong>Supported funds:</strong> HDFC Large Cap · HDFC Flexi Cap · HDFC ELSS Tax Saver · HDFC Mid Cap</p>
+    <p>Answers are drawn from five approved public Groww pages. Facts-only. No investment advice.</p>
+    <a class="text-brand-dark dark:text-brand hover:underline focus-ring" href="https://groww.in/mutual-funds/amc/hdfc-mutual-funds" target="_blank" rel="noopener noreferrer">View approved HDFC fund source ↗</a>
+  </div>
+</footer>
+<script src="/stitch.js" defer></script>
+</body></html>

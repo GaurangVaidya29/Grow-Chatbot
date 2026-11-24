@@ -58,7 +58,7 @@ The architecture deliberately favors inspectability and deterministic safeguards
 | Concern | Reference choice | Rationale |
 |---|---|---|
 | Runtime | Python 3.11+ | Strong support for scraping, embeddings, ChromaDB, and rapid prototyping. |
-| UI | Supplied Stitch export in `public/stitch.html` with `public/stitch.js` | Responsive browser interface hosted by Vercel and connected to `/api/query`. |
+| UI | Supplied Stitch export in `public/index.html` with `public/stitch.js` | Responsive browser interface hosted by Vercel and connected to `/api/query`. |
 | Configuration | YAML + Pydantic settings + `.env` | Typed validation and clean separation of settings from secrets. |
 | HTTP loading | `httpx` | Timeouts, redirect controls, response limits, and testable client abstraction. |
 | HTML extraction | Beautiful Soup with source-specific selectors and generic fallback | Preserves labelled facts while keeping parsing inspectable. |
@@ -154,7 +154,7 @@ The web application loads the source registry and index manifest at startup. Eac
 
 Example command:
 
-The production browser loads `public/stitch.html` from `/` and sends `POST /api/query` with a JSON `question`. The Vercel function uses the exported read-only index, Hugging Face query embeddings, and Groq answer generation. Local CLI queries use ChromaDB and the locally cached MiniLM model.
+The production browser loads `public/index.html` from `/` and sends `POST /api/query` with a JSON `question`. The Vercel function uses the exported read-only index, Hugging Face query embeddings, and Groq answer generation. Local CLI queries use ChromaDB and the locally cached MiniLM model.
 
 ### 8.3 Evaluation path
 
@@ -436,7 +436,7 @@ It does not persist raw requests or responses. When debug tracing is explicitly 
 
 ### 9.16 Stitch export browser UI
 
-`stitch_hdfc_fund_facts_assistant.zip` is the supplied design source. The active frontend uses the export's layout and Tailwind styling in `public/stitch.html`, with application behavior in `public/stitch.js`; `vercel.json` maps `/` to it. The ZIP's sample answer, factsheet claims, and demo routing are not authoritative. The UI uses the category, answer, citation, and source date returned by `/api/query` and contains no retrieval or policy logic. It displays:
+`stitch_hdfc_fund_facts_assistant.zip` is the supplied design source. The active frontend uses the export's layout and Tailwind styling in `public/index.html`, with application behavior in `public/stitch.js`; `public/stitch.html` is a matching compatibility copy. The ZIP's sample answer, factsheet claims, and demo routing are not authoritative. The UI uses the category, answer, citation, and source date returned by `/api/query` and contains no retrieval or policy logic. It displays:
 
 - Welcome message.
 - Three example questions.

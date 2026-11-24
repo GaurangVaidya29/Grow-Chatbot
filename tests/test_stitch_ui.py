@@ -11,7 +11,7 @@ VERCEL_IGNORE = (ROOT / ".vercelignore").read_text(encoding="utf-8").splitlines(
 
 def test_vercel_root_uses_stitch_ui_and_existing_api_contract():
     assert ROUTING["framework"] is None
-    assert {"source": "/", "destination": "/stitch.html"} in ROUTING["rewrites"]
+    assert (ROOT / "public/index.html").read_text(encoding="utf-8") == HTML
     assert 'id="qaForm"' in HTML
     assert "fetch('/api/query'" in SCRIPT
     assert "payload.category" in SCRIPT
