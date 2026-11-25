@@ -757,7 +757,7 @@ Do not include a public debug panel in the Stitch UI. The legacy local `app/ui.p
 python -m http.server 8088 --bind 127.0.0.1 --directory public
 ```
 
-The local static server previews the design only; `/api/query` must be served by the deployed Vercel function or a compatible local API. Deploy with `vercel.json` and configured `GROQ_API_KEY` and `HF_TOKEN`.
+The local static server previews the design only; `/api/query` must be served by the deployed Vercel function or a compatible local API. Deploy with `vercel.json` and configure `GROQ_API_KEY` in Vercel for broader factual answers. Add `HF_TOKEN` for semantic query embeddings. When Hugging Face inference fails, the function searches approved indexed text; a single explicit scheme fact can be quoted directly when Groq is unavailable.
 
 ### 10.6 UI edge cases
 

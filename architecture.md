@@ -154,7 +154,7 @@ The web application loads the source registry and index manifest at startup. Eac
 
 Example command:
 
-The production browser loads `public/index.html` from `/` and sends `POST /api/query` with a JSON `question`. The Vercel function uses the exported read-only index, Hugging Face query embeddings, and Groq answer generation. Local CLI queries use ChromaDB and the locally cached MiniLM model.
+The production browser loads `public/index.html` from `/` and sends `POST /api/query` with a JSON `question`. The Vercel function uses the exported read-only index, Hugging Face query embeddings when available, and Groq answer generation. If remote query embedding fails, it searches only the approved indexed text, filtered by scheme and fact type. A single structured source fact can be quoted directly if generation also fails. Local CLI queries use ChromaDB and the locally cached MiniLM model.
 
 ### 8.3 Evaluation path
 

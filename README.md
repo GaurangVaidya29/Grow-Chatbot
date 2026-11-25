@@ -22,7 +22,7 @@ python -m pip install -r requirements-local.txt
 copy .env.example .env
 ```
 
-Add a valid `GROQ_API_KEY` to `.env` to enable factual answer generation. Groq is the only runtime LLM provider; without a valid key, factual generation fails closed with a service error. Never commit `.env`.
+Add a valid `GROQ_API_KEY` to `.env` to enable factual answer generation. Groq is the only runtime LLM provider; without a valid key, the Vercel function can still quote a single explicit indexed fact, while broader questions fail closed. Never commit `.env`.
 
 ## Validate Phase 1
 
@@ -69,7 +69,7 @@ Open `http://127.0.0.1:8088/` to preview the layout. The static server does not 
 
 ## Deploy on Vercel
 
-Vercel serves `public/index.html` at `/` and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection, while query embeddings are generated through Hugging Face Inference and factual answers through Groq.
+Vercel serves `public/index.html` at `/` and uses the serverless handler in `api/query.py`. The exported read-only vector index contains the same 59 normalized MiniLM embeddings as the active local Chroma collection. With `HF_TOKEN`, query embeddings use Hugging Face Inference. If that service is unavailable, the function searches the approved indexed text; a single explicit scheme fact can also be quoted directly when Groq is unavailable. Other factual answers use Groq.
 
 Add these Environment Variables in Vercel for Production, Preview, and Development:
 
@@ -77,9 +77,11 @@ Add these Environment Variables in Vercel for Production, Preview, and Developme
 LLM_PROVIDER=groq
 LLM_MODEL=qwen/qwen3.8-27b
 GROQ_API_KEY=<your Groq key>
-HF_TOKEN=<your Hugging Face token with inference permission>
+HF_TOKEN=<optional Hugging Face token with inference permission>
 HF_EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
 ```
+
+Set `GROQ_API_KEY` in Vercel for broader factual answers. The local `.env` is not uploaded to Vercel. Add `HF_TOKEN` there to enable semantic query embeddings; the approved-text fallback handles a missing token or inference outage.
 
 Use the following project settings:
 

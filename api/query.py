@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import math
 import os
 import re
@@ -64,6 +65,11 @@ SCHEME_REQUIRED_FACTS = {
     "lock_in",
     "riskometer",
     "benchmark",
+}
+SEARCH_STOPWORDS = {
+    "what", "which", "when", "where", "who", "how", "does", "the", "for", "and", "are",
+    "this", "that", "with", "from", "about", "hdfc", "fund", "mutual", "direct", "growth",
+    "plan", "cap", "large", "mid", "flexi", "elss", "tax", "saver",
 }
 
 PAN_PATTERN = re.compile(r"\b[A-Z]{5}[0-9]{4}[A-Z]\b", re.I)
@@ -211,8 +217,64 @@ def query_embedding(question: str, index: dict[str, Any]) -> list[float]:
     return [float(value) for value in vector]
 
 
+def indexed_fact_hits(index: dict[str, Any], scheme_id: str | None, fact_type: str) -> list[dict[str, Any]]:
+    """Return only records explicitly tagged with the requested scheme and fact."""
+    if not scheme_id or fact_type not in SCHEME_REQUIRED_FACTS:
+        return []
+    return [
+        record for record in index["records"]
+        if record.get("scheme_id") == scheme_id and record.get("fact_type") == fact_type
+    ]
+
+
+def direct_fact_answer(index: dict[str, Any], scheme_id: str | None, fact_type: str) -> dict[str, Any] | None:
+    """Quote a single structured source fact when external inference is unavailable."""
+    hits = indexed_fact_hits(index, scheme_id, fact_type)
+    if len(hits) != 1:
+        return None
+    hit = hits[0]
+    lines = hit["text"].splitlines()
+    if (len(lines) != 3 or not lines[0].startswith("Scheme: ")
+            or not lines[1].startswith("Section: ") or ": " not in lines[2]
+            or len(lines[2]) > 300):
+        return None
+    source = index["sources"].get(hit["source_id"])
+    if not source or source.get("scheme_id") != scheme_id:
+        return None
+    label, value = lines[2].split(": ", 1)
+    fact_text = value if value.lower().startswith(f"{label.lower()} ") else lines[2]
+    return response_payload(
+        index,
+        "FACTUAL_SUPPORTED",
+        f"{lines[0].removeprefix('Scheme: ')} — {fact_text}",
+        source_id=hit["source_id"],
+        evidence_ids=[hit["chunk_id"]],
+        source_updated_at=hit["retrieved_at"],
+    )
+
+
+def lexical_retrieve(question: str, index: dict[str, Any], scheme_id: str | None, fact_type: str) -> list[dict[str, Any]]:
+    """Search the trusted index when remote query embeddings are unavailable."""
+    terms = set(re.findall(r"[a-z]{3,}", question.lower())) - SEARCH_STOPWORDS
+    candidates = []
+    for record in index["records"]:
+        if scheme_id and record.get("scheme_id") != scheme_id:
+            continue
+        if fact_type != "general" and record.get("fact_type") != fact_type:
+            continue
+        record_terms = set(re.findall(r"[a-z]{3,}", record["text"].lower())) - SEARCH_STOPWORDS
+        overlap = len(terms & record_terms)
+        if (fact_type in SCHEME_REQUIRED_FACTS and scheme_id) or overlap >= (1 if scheme_id else 2):
+            candidates.append({**record, "score": overlap / max(len(terms), 1)})
+    return sorted(candidates, key=lambda item: item["score"], reverse=True)[: index["top_k"]]
+
+
 def retrieve(question: str, index: dict[str, Any], scheme_id: str | None, fact_type: str) -> list[dict[str, Any]]:
-    vector = query_embedding(question, index)
+    try:
+        vector = query_embedding(question, index)
+    except Exception as exc:
+        logging.warning("Query embedding unavailable; using indexed text: %s", type(exc).__name__)
+        return lexical_retrieve(question, index, scheme_id, fact_type)
     norm = math.sqrt(sum(value * value for value in vector))
     if norm == 0:
         raise RuntimeError("Query embedding has zero magnitude")
@@ -342,7 +404,11 @@ def answer_question(raw_question: Any) -> tuple[int, dict[str, Any]]:
                 scheme_id=scheme_id,
             )
         return 200, generate(question, scheme_id, fact_type, hits, index)
-    except Exception:
+    except Exception as exc:
+        logging.warning("Verified fact query failed: %s", type(exc).__name__)
+        direct = direct_fact_answer(index, scheme_id, fact_type)
+        if direct is not None:
+            return 200, direct
         return 503, response_payload(
             index,
             "SERVICE_ERROR",
